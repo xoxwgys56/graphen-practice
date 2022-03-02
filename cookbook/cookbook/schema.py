@@ -1,3 +1,4 @@
+from nis import cat
 import graphene
 from graphene_django import DjangoObjectType
 
@@ -19,6 +20,39 @@ class IngredientType(DjangoObjectType):
     class Meta:
         model = Ingredient
         fields = ("id", "name", "notes", "category")
+
+
+class CategoryInput(graphene.InputObjectType):
+    name = graphene.String()
+
+
+class IngredientInput(graphene.InputObjectType):
+    name = graphene.String()
+    notes = graphene.String()
+    category = CategoryInput()
+
+
+class CreateIngredient(graphene.Mutation):
+    class Arguments:
+        ingredient = IngredientInput(required=True)
+
+    ok = graphene.Boolean()
+    ingredient = graphene.Field(lambda: IngredientType)
+
+    def mutate(root, info, ingredient):
+        # NOTE do not check category is defined or not.
+        try:
+            category = Category.objects.get(name=ingredient.category.name)
+        except Exception as err:
+            category = Category(name=ingredient.category.name)
+            category.save()
+        new_ingredient = Ingredient(
+            name=ingredient.name, notes=ingredient.notes, category=category
+        )
+        ok = True
+        new_ingredient.save()
+
+        return CreateIngredient(ingredient=new_ingredient, ok=ok)
 
 
 class Query(graphene.ObjectType):
@@ -55,4 +89,8 @@ class Query(graphene.ObjectType):
             return None
 
 
-cookbook_schema = graphene.Schema(query=Query)
+class Mutation(graphene.ObjectType):
+    create_ingredient = CreateIngredient.Field()
+
+
+cookbook_schema = graphene.Schema(query=Query, mutation=Mutation)
