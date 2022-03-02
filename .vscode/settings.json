@@ -1,5 +1,6 @@
 {
     "editor.formatOnSave": true,
     "python.formatting.provider": "black",
-    "python.formatting.blackPath": "~/.local/share/virtualenvs/graphen-practice-0HnyASGY/bin/black"
+    "python.formatting.blackPath": "~/.local/share/virtualenvs/graphen-practice-0HnyASGY/bin/black",
+    "python.defaultInterpreterPath": "~/.local/share/virtualenvs/graphen-practice-0HnyASGY/bin/python3",
 }
