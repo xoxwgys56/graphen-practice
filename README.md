@@ -2,6 +2,29 @@
 
 follow [quickstart](https://docs.graphene-python.org/en/latest/quickstart/)
 
+## usage
+
+```shell
+# use pipenv
+pipenv shell
+pipenv install && pipenv install --dev
+
+# use python venv
+#
+# skip generate venv and activate
+pip3 install -r ./requirements.txt
+
+# after initialize
+cd ./cookbook
+python3 manage.py migrate && python3 manage.py loaddata ingredients
+python3 manage.py runserver
+```
+
+### superuser
+
+- id : admin
+- pw : 1234
+
 ## Issues
 
 ```shell
