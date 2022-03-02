@@ -15,7 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
+from graphene_django.views import GraphQLView
+
+from .schema import cookbook_schema
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+    # as you see below, there is single end-point except admin.
+    # path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    # also we can specifying schema. if we do not setup in setting.py
+    path(
+        "graphql",
+        csrf_exempt(GraphQLView.as_view(graphiql=True, schema=cookbook_schema)),
+    ),
 ]
