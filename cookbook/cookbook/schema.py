@@ -28,11 +28,12 @@ class Query(graphene.ObjectType):
     expect below query:
     ```graphql
     query {
-        resolve_all_ingredients {
+        allIngredients {
             ingredients: [Ingredient!]!
         }
     }
     ```
+    but can not find no explicit query definition (like above) inside of method.
     """
 
     all_ingredients = graphene.List(IngredientType)
